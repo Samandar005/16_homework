@@ -52,20 +52,15 @@ class Product(models.Model):
             self.slug
         ])
 
+    def get_success_commented_url(self):
+        return reverse('products:success_review', args=[self.pk])
+
     def __str__(self):
         return f'{self.name}'
 
 class Review(models.Model):
-    STAR_CHOICES = [
-        (1, '1 Star'),
-        (2, '2 Stars'),
-        (3, '3 Stars'),
-        (4, '4 Stars'),
-        (5, '5 Stars'),
-    ]
-
     name = models.CharField(max_length=200)
-    rating = models.IntegerField(choices=STAR_CHOICES)
+    rating = models.CharField(max_length=200, null=True)
     review = models.TextField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
 

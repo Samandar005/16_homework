@@ -42,7 +42,8 @@
 
     <div class="add-review-section animate-slide-up">
         <h2 class="section-title">Add a Review</h2>
-        <form id="review-form" class="review-form">
+        <form id="review-form" action="{% url 'products:reviews_create' product.pk %}" class="review-form" method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="reviewer-name" class="form-label">Name:</label>
                 <input type="text" id="reviewer-name" name="name" required class="form-input">
@@ -50,15 +51,16 @@
             <div class="form-group">
                 <label for="review-rating" class="form-label">Rating:</label>
                 <select id="review-rating" name="rating" required class="form-input">
-                    <option value="">Select rating</option>
-                    {% for review in reviews %}
-                        <option value="{{ review.id }}">{{ review.rating }}</option>
-                    {% endfor %}
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="review-content" class="form-label">Review:</label>
-                <textarea id="review-content" name="review-content" required class="form-input"></textarea>
+                <textarea id="review-content" name="review" required class="form-input"></textarea>
             </div>
             <button type="submit" class="submit-button">Submit Review</button>
         </form>

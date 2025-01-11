@@ -140,22 +140,21 @@ def create_review(request, pk):
         name = request.POST.get('name')
         rating = request.POST.get('rating')
         review = request.POST.get('review')
-        if name and rating and review:
+        if name and review:
             Review.objects.create(
                 name=name,
                 rating=rating,
                 review=review,
                 product=product
             )
-            return redirect('products:detail', pk=product.pk)
+            return redirect(product.get_success_commented_url())
     reviews = Review.objects.filter(product=product)
     ctx = {
         'product': product,
         'reviews': reviews,
     }
-    return render(request, 'products/blog-detail.html', ctx)
+    return render(request, 'products/product-detail.html', ctx)
 
 def success_review(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'products/success-commented.html', {'product': product})
-
