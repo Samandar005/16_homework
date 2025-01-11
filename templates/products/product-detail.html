@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+
+{% block title %} Astrum Market - Product Detail  {% endblock %}
+
+{% block content %}
+<div class="content-container animate-fade-in">
+    <div class="product-detail">
+        <div class="product-image-container">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                 class="product-image">
+        </div>
+        <div class="product-info">
+            <h1 class="product-title">{{ product.name }}</h1>
+            <p class="product-price">${{ product.price }}</p>
+            <div class="product-meta">
+                <p><strong>Brand:</strong> {{ product.brand }}</p>
+                <p><strong>Color:</strong> {{ product.color }}</p>
+            </div>
+            <p class="product-description">
+                {{ product.description }}
+            </p>
+        </div>
+    </div>
+
+    <div class="reviews-section animate-slide-up">
+        <h2 class="section-title">Reviews</h2>
+        {% for review in reviews %}
+        <div class="reviews-container">
+            <div class="review">
+                <div class="review-header">
+                    <h3 class="reviewer-name">{{ review.name }}</h3>
+                    <div class="review-rating">{{ review.rating }}</div>
+                </div>
+                <p class="review-content">{{ review.review }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <h3>No Reviews!</h3>
+        {% endfor %}
+    </div>
+
+    <div class="add-review-section animate-slide-up">
+        <h2 class="section-title">Add a Review</h2>
+        <form id="review-form" class="review-form">
+            <div class="form-group">
+                <label for="reviewer-name" class="form-label">Name:</label>
+                <input type="text" id="reviewer-name" name="name" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="review-rating" class="form-label">Rating:</label>
+                <select id="review-rating" name="rating" required class="form-input">
+                    <option value="">Select rating</option>
+                    {% for review in reviews %}
+                        <option value="{{ review.id }}">{{ review.rating }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="review-content" class="form-label">Review:</label>
+                <textarea id="review-content" name="review-content" required class="form-input"></textarea>
+            </div>
+            <button type="submit" class="submit-button">Submit Review</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
