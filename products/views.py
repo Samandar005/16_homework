@@ -66,11 +66,11 @@ def product_list(request):
     if color:
         products = products.filter(color=color)
     if sort == 'low_to_high':
-        products = products.order_by('price')  # Narx bo'yicha kichikdan kattaga
+        products = products.order_by('price')
     elif sort == 'high_to_low':
-        products = products.order_by('-price')  # Narx bo'yicha kattadan kichikka
+        products = products.order_by('-price')
     elif sort == 'name_asc':
-        products = products.order_by('name')  # Nom bo'yicha A dan Z ga
+        products = products.order_by('name')
     elif sort == 'name_desc':
         products = products.order_by('-name')
 
