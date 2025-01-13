@@ -1,4 +1,3 @@
-from msvcrt import CRT_ASSEMBLY_VERSION
 from django.utils.text import slugify
 from django.urls import reverse
 from django.db import models
