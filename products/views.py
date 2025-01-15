@@ -3,12 +3,23 @@ from .models import *
 
 
 def home(request):
+    selected_categories = None
     products = Product.objects.all()
     categories = Category.objects.all()
     category = request.GET.get('category')
     if category:
         products = products.filter(category=category)
-    ctx = {'products': products, 'categories': categories}
+
+    if category:
+        products = products.filter(brand__id__in=category)
+        selected_categories = categories.filter(id__in=category)
+        categories = categories.exclude(id__in=category)
+
+    ctx = {
+        'products': products,
+        'selected_categories': selected_categories,
+        'categories': categories
+    }
     return render(request, 'index.html', ctx)
 
 def create_brand(request):
@@ -50,21 +61,35 @@ def create_color(request):
     return render(request, 'products/color-create.html')
 
 def product_list(request):
+    selected_brands = None
+    selected_colors = None
     products = Product.objects.all()
+    brands = Brand.objects.all()
+    colors = Color.objects.all()
+    categories = Category.objects.all()
+
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
-    brand = request.GET.get('brand')
+    brand = [int(x) for x in request.GET.getlist('brand')]
     color = request.GET.get('color')
     sort = request.GET.get('sort')
 
     if min_price:
-        products = products.filter(price__gte=min_price)
+        products = products.filter(price__gte=float(min_price))
     if max_price:
-        products = products.filter(price__lte=max_price)
+        products = products.filter(price__lte=float(max_price))
+
     if brand:
-        products = products.filter(brand=brand)
+        products = products.filter(brand__id__in=brand)
+        selected_brands = brands.filter(id__in=brand)
+        brands = brands.exclude(id__in=brand)
+
     if color:
-        products = products.filter(color=color)
+        products = products.filter(brand__id__in=color)
+        selected_colors = colors.filter(id__in=color)
+        colors = colors.exclude(id__in=color)
+
+
     if sort == 'low_to_high':
         products = products.order_by('price')
     elif sort == 'high_to_low':
@@ -74,15 +99,13 @@ def product_list(request):
     elif sort == 'name_desc':
         products = products.order_by('-name')
 
-    brands = Brand.objects.all()
-    categories = Category.objects.all()
-    colors = Color.objects.all()
-
     ctx = {
         'products': products,
         'brands': brands,
         'categories': categories,
-        'colors': colors
+        'colors': colors,
+        'selected_colors': selected_colors,
+        'selected_brands': selected_brands
     }
     return render(request, 'products/product-by-category.html', ctx)
 

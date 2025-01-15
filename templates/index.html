@@ -4,48 +4,57 @@
 {% block title %} Astrum Market  {% endblock %}
 
 {% block content %}
-    <div class="content-container">
-        <h1 class="page-title">Welcome to Astrum Market</h1>
-        <p class="intro-text">Discover our latest products and amazing deals!</p>
+<div class="content-container">
+    <h1 class="page-title">Welcome to Astrum Market</h1>
+    <p class="intro-text">Discover our latest products and amazing deals!</p>
     {% if products %}
-        <div class="product-grid stagger-animation">
+    <div class="product-grid stagger-animation">
         <aside class="filters-sidebar animate-slide-up">
             <h2 class="filters-title">Categories</h2>
             <form id="filter-form" class="filters-form">
                 <div class="filter-group">
                     <h3 class="filter-subtitle">Category</h3>
+                    {% if selected_categories %}
+                        {% for category in selected_categories %}
+                            <label class="filter-option">
+                                <input type="checkbox" name="brand" value="{{ category.id }}" checked>
+                                <span class="checkmark"></span>
+                                {{ category.name }}
+                            </label>
+                        {% endfor %}
+                    {% endif %}
                     {% for category in categories %}
-                        <label class="filter-option">
-                            <input type="checkbox" name="category" value="{{ category.id }}">
-                            <span class="checkmark"></span>
-                            {{ category.name }}
-                        </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="category" value="{{ category.id }}">
+                        <span class="checkmark"></span>
+                        {{ category.name }}
+                    </label>
                     {% endfor %}
                 </div>
                 <button type="submit" class="filter-button">Apply Filters</button>
             </form>
         </aside>
 
-            {% for product in products %}
-                <a href="{{ product.get_detail_url }}" class="product-card animate-scale-up">
-                    <div class="product-image">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">{{ product.name }}</h3>
-                        <p class="product-price">{{ product.price }}</p>
-                        <span class="view-details">View Details</span>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-
-        <div class="cta-section">
-            <h2>Explore More</h2>
-            <a href="{% url 'products:list' %}" class="cta-button">View All Products</a>
-        </div>
-    {% else %}
-        <h3>No Products!</h3>
-    {% endif %}
+        {% for product in products %}
+        <a href="{{ product.get_detail_url }}" class="product-card animate-scale-up">
+            <div class="product-image">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-price">{{ product.price }}</p>
+                <span class="view-details">View Details</span>
+            </div>
+        </a>
+        {% endfor %}
     </div>
+
+    <div class="cta-section">
+        <h2>Explore More</h2>
+        <a href="{% url 'products:list' %}" class="cta-button">View All Products</a>
+    </div>
+    {% else %}
+    <h3>No Products!</h3>
+    {% endif %}
+</div>
 {% endblock %}

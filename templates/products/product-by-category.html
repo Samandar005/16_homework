@@ -12,6 +12,15 @@
             <form id="filter-form" class="filters-form">
                 <div class="filter-group">
                     <h3 class="filter-subtitle">Brand</h3>
+                    {% if selected_brands %}
+                        {% for brand in selected_brands %}
+                            <label class="filter-option">
+                            <input type="checkbox" name="brand" value="{{ brand.id }}" checked>
+                            <span class="checkmark"></span>
+                            {{ brand.name }}
+                        </label>
+                        {% endfor %}
+                    {% endif %}
                     {% for brand in brands %}
                         <label class="filter-option">
                             <input type="checkbox" name="brand" value="{{ brand.id }}">
@@ -22,6 +31,15 @@
                 </div>
                 <div class="filter-group">
                     <h3 class="filter-subtitle">Color</h3>
+                    {% if selected_colors %}
+                        {% for color in selected_colors %}
+                            <label class="filter-option">
+                                <input type="checkbox" name="brand" value="{{ color.id }}" checked>
+                                <span class="checkmark"></span>
+                                {{ color.name }}
+                            </label>
+                        {% endfor %}
+                    {% endif %}
                     {% for color in colors %}
                         <label class="filter-option">
                             <input type="checkbox" name="color" value="{{ color.id }}">
