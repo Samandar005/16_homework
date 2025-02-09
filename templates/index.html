@@ -7,7 +7,6 @@
 <div class="content-container">
     <h1 class="page-title">Welcome to Astrum Market</h1>
     <p class="intro-text">Discover our latest products and amazing deals!</p>
-    {% if products %}
     <div class="product-grid stagger-animation">
         <aside class="filters-sidebar animate-slide-up">
             <h2 class="filters-title">Categories</h2>
@@ -34,7 +33,7 @@
                 <button type="submit" class="filter-button">Apply Filters</button>
             </form>
         </aside>
-
+ {% if products %}
         {% for product in products %}
         <a href="{{ product.get_detail_url }}" class="product-card animate-scale-up">
             <div class="product-image">
@@ -54,7 +53,7 @@
         <a href="{% url 'products:list' %}" class="cta-button">View All Products</a>
     </div>
     {% else %}
-    <h3>No Products!</h3>
+        <h3 style="text-align: center;">No Products!</h3>
     {% endif %}
 </div>
 {% endblock %}

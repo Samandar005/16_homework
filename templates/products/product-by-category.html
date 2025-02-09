@@ -60,35 +60,40 @@
         </aside>
         <div class="product-content">
             <div class="product-header">
-                <p class="product-count">Showing 6 products</p>
-                <form method="get" action="{% url 'products:list' %}">
-                    <div class="sort-container">
-                        <label for="sort-select" class="sort-label">Sort by:</label>
-                        <select id="sort-select" name="sort" class="sort-select">
-                            <option value="low_to_high" {% if request.GET.sort == "low_to_high" %}selected{% endif %}>Price: Low to High</option>
-                            <option value="high_to_low" {% if request.GET.sort == "high_to_low" %}selected{% endif %}>Price: High to Low</option>
-                            <option value="name_asc" {% if request.GET.sort == "name_asc" %}selected{% endif %}>Name: A to Z</option>
-                            <option value="name_desc" {% if request.GET.sort == "name_desc" %}selected{% endif %}>Name: Z to A</option>
-                        </select>
-                    </div>
-                        <button type="submit" class="sort-button">Sort</button>
-                </form>
-
-            </div>
-            <div class="product-grid stagger-animation">
-                {% for product in products %}
-                    <a href="{{ product.get_detail_url }}" class="product-card animate-scale-up">
-                        <div class="product-image">
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% if products %}
+                <p class="product-count">Showing {{ products.count }} products</p>
+                    <form method="get" action="{% url 'products:list' %}">
+                        <div class="sort-container">
+                            <label for="sort-select" class="sort-label">Sort by:</label>
+                            <select id="sort-select" name="sort" class="sort-select">
+                                <option value="low_to_high" {% if request.GET.sort == "low_to_high" %}selected{% endif %}>Price: Low to High</option>
+                                <option value="high_to_low" {% if request.GET.sort == "high_to_low" %}selected{% endif %}>Price: High to Low</option>
+                                <option value="name_asc" {% if request.GET.sort == "name_asc" %}selected{% endif %}>Name: A to Z</option>
+                                <option value="name_desc" {% if request.GET.sort == "name_desc" %}selected{% endif %}>Name: Z to A</option>
+                            </select>
                         </div>
-                        <div class="product-info">
-                            <h3 class="product-name">{{ product.name }}</h3>
-                            <p class="product-price">{{ product.price }}</p>
-                            <span class="view-details">View Details</span>
-                        </div>
-                    </a>
-                {% endfor %}
+                            <button type="submit" class="sort-button">Sort</button>
+                    </form>
+                {% endif %}
             </div>
+            {% if products %}
+                <div class="product-grid stagger-animation">
+                    {% for product in products %}
+                        <a href="{{ product.get_detail_url }}" class="product-card animate-scale-up">
+                            <div class="product-image">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-name">{{ product.name }}</h3>
+                                <p class="product-price">{{ product.price }}</p>
+                                <span class="view-details">View Details</span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h3>No Products!</h3>
+            {% endif %}
         </div>
     </div>
 </div>
